@@ -1,0 +1,10 @@
+# filelist 是 Verilog 文件列表，不是 Fortran
+filelist/*.f linguist-language=Verilog
+filelist/*.f linguist-detectable=false
+
+# 汇编测试程序不计入语言统计
+*.asm linguist-detectable=false
+
+# 其他杂项
+*.mem linguist-detectable=false
+tag.txt linguist-detectable=false
