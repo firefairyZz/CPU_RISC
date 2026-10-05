@@ -1,0 +1,11 @@
+# iverilog 仿真产物
+sim.out
+*.vvp
+*.vcd
+
+# VS Code 的 icarus 插件目录
+icarus/
+
+# 临时文件
+*.tmp
+*.log

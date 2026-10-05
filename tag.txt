@@ -1,0 +1,22 @@
+//指令
+R 型（操作码 0000 到 0111）：
+0000 ADD：Rd = Rs1 + Rs2
+0001 SUB：Rd = Rs1 - Rs2
+0010 AND：Rd = Rs1 & Rs2
+0011 OR：Rd = Rs1 | Rs2
+0100 XOR：Rd = Rs1 ^ Rs2
+0101 SHL：Rd = Rs1 << Rs2
+0110 SHR：Rd = Rs1 >> Rs2
+0111 CMP：只更新标志位，不写 Rd
+I 型（操作码 1000 到 1010）：
+1000 LOADI：Rd = 立即数
+1001 ADDI：Rd = Rd + 立即数
+1010 SUBI：Rd = Rd - 立即数
+特殊（操作码 1011）：
+1011 HLT：停机
+J 型（操作码 1100 到 1101）：
+1100 JMP：PC = 地址
+1101 JZ：Zero 标志是 1 则跳转，否则 PC 自增
+M 型（操作码 1110 到 1111）：
+1110 LOAD：Rd = Mem[Rs1]
+1111 STORE：Mem[Rd] = Rs1

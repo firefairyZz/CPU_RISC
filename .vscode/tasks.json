@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Verilog: 编译并仿真",
+            "type": "shell",
+            "command": "iverilog",
+            "args": ["-g2012", "-o", "sim.out", "-f", "filelist/filelist_cpu.f"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Verilog: 运行仿真",
+            "type": "shell",
+            "command": "vvp",
+            "args": [
+                "${workspaceFolder}/sim.out"
+            ],
+            "dependsOn": "Verilog: 编译并仿真",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

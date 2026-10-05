@@ -1,0 +1,14 @@
+src/CPU_16.v
+src/ALU_16.v
+src/RegFile_16.v
+src/PC_16.v
+src/IR_16.v
+src/ControlUnit_16.v
+src/ROM_16.v
+src/FlagReg_16.v
+src/UART_TX.v
+src/FIFO_16.v
+src/Pipelined_CU.v
+src/Forwarding_Unit.v
+src/UART_RX.v
+tb/tb_CPU_16.v
