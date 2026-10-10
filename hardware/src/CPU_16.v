@@ -323,7 +323,10 @@ module CPU_16 (
     // ============================================
 
     Pipelined_CU u_CU (
-        .Opcode(Op_id), .Zero(Flags[0]),
+        .Opcode(Op_id),
+        .CondMode(IF_ID_Instr[11:10]),
+        .Zero(Flags[0]),
+        .Neg(Flags[2]),
         .RegWE(ID_RegWE), .ALUSel(ID_ALUSel), .ImmSel(ID_ImmSel),
         .MemRead(ID_MemRead), .MemWrite(ID_MemWrite), .MemToReg(ID_MemToReg),
         .PCLoad(ID_PCLoad), .FlagWE(ID_FlagWE)

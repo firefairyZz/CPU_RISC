@@ -3,6 +3,86 @@
         LOADI R8, -2
         LOADI R9, -1
 
+        ; -------- 初始化数据段到 RAM --------
+        ; 字符串1: "help: help, clear\n\0" (起始 0x20)
+        LOADI R1, 0x20
+        LOADI R2, 104
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 101
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 108
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 112
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 58
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 32
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 104
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 101
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 108
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 112
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 44
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 32
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 99
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 108
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 101
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 97
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 114
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 10
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 0
+        STORE R1, R2
+
+        ; 字符串2: "?\n\0" (起始 0x40)
+        LOADI R1, 0x40
+        LOADI R2, 63
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 10
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 0
+        STORE R1, R2
+
+        ; 字符串3: "\n\0" (起始 0x45)
+        LOADI R1, 0x45
+        LOADI R2, 10
+        STORE R1, R2
+        ADDI  R1, 1
+        LOADI R2, 0
+        STORE R1, R2
+
+; ===== 主循环 =====
 main:   LOADI R1, 62
         STORE R9, R1
         LOADI R1, 32
@@ -12,7 +92,7 @@ main:   LOADI R1, 62
         CALL  dispatch
         JMP   main
 
-; ===== read_line =====
+; ===== read_line：读一行到 0x10 =====
 read_line:
         LOADI R6, 16
         LOADI R5, 0
@@ -54,11 +134,10 @@ rl_back:
 rl_done:
         LOADI R3, 0
         STORE R6, R3
-        LOADI R3, 10
-        STORE R9, R3
+        CALL  print_newline
         RET
 
-; ===== dispatch =====
+; ===== dispatch：命令分发 =====
 dispatch:
         LOADI R4, 16
         LOAD  R1, R4
@@ -79,7 +158,7 @@ dispatch:
 
         JMP   cmd_unknown
 
-; ---- help ----
+; ---- 匹配 "help" ----
 try_help:
         LOADI R5, 1
         ADD   R5, R4, R5
@@ -98,15 +177,10 @@ help3:  ADDI  R5, 1
         LOAD  R1, R5
         LOADI R2, 112
         CMP   R1, R2
-        JZ    help4
-        JMP   cmd_unknown
-help4:  ADDI  R5, 1
-        LOAD  R1, R5
-        CMP   R1, R0
         JZ    cmd_help
         JMP   cmd_unknown
 
-; ---- clear ----
+; ---- 匹配 "clear" ----
 try_clear:
         LOADI R5, 1
         ADD   R5, R4, R5
@@ -131,15 +205,10 @@ clear4: ADDI  R5, 1
         LOAD  R1, R5
         LOADI R2, 114
         CMP   R1, R2
-        JZ    clear5
-        JMP   cmd_unknown
-clear5: ADDI  R5, 1
-        LOAD  R1, R5
-        CMP   R1, R0
         JZ    cmd_clear
         JMP   cmd_unknown
 
-; ---- echo ----
+; ---- 匹配 "echo" ----
 try_echo:
         LOADI R5, 1
         ADD   R5, R4, R5
@@ -161,79 +230,42 @@ echo3:  ADDI  R5, 1
         JZ    cmd_echo
         JMP   cmd_unknown
 
-; ---- 命令处理 ----
+; ===== 命令处理 =====
 cmd_empty:
-        JMP   main
+        RET
 
 cmd_unknown:
-        LOADI R1, 63
-        STORE R9, R1
-        LOADI R1, 10
-        STORE R9, R1
-        JMP   main
+        LOADI R1, 0x40
+        CALL  print_string
+        RET
 
 cmd_help:
-        LOADI R1, 104
-        STORE R9, R1
-        LOADI R1, 101
-        STORE R9, R1
-        LOADI R1, 108
-        STORE R9, R1
-        LOADI R1, 112
-        STORE R9, R1
-        LOADI R1, 58
-        STORE R9, R1
-        LOADI R1, 32
-        STORE R9, R1
-        LOADI R1, 104
-        STORE R9, R1
-        LOADI R1, 101
-        STORE R9, R1
-        LOADI R1, 108
-        STORE R9, R1
-        LOADI R1, 112
-        STORE R9, R1
-        LOADI R1, 44
-        STORE R9, R1
-        LOADI R1, 32
-        STORE R9, R1
-        LOADI R1, 99
-        STORE R9, R1
-        LOADI R1, 108
-        STORE R9, R1
-        LOADI R1, 101
-        STORE R9, R1
-        LOADI R1, 97
-        STORE R9, R1
-        LOADI R1, 114
-        STORE R9, R1
-        LOADI R1, 10
-        STORE R9, R1
-        JMP   main
+        LOADI R1, 0x20
+        CALL  print_string
+        RET
 
 cmd_clear:
         LOADI R5, 10
 cc_loop:
-        LOADI R1, 10
-        STORE R9, R1
+        CALL  print_newline
         ADDI  R5, -1
         CMP   R5, R0
         JZ    cc_done
         JMP   cc_loop
 cc_done:
-        JMP   main
+        RET
 
 cmd_echo:
-        LOADI R4, 20        ; R4 = 缓冲区 + 4（echo 后面那个字符）
+        LOADI R4, 20
         LOAD  R1, R4
         CMP   R1, R0
-        JZ    ec_newline    ; 是 \0，直接输出换行
+        JZ    ec_newline
         LOADI R2, 32
         CMP   R1, R2
-        JZ    ec_skip       ; 是空格，跳过
-        JMP   ec_loop       ; 其他，从当前位置读
+        JZ    ec_skip
+        JMP   ec_loop
 ec_skip:
-        ADDI  R4, 1         ; 跳过空格
+        ADDI  R4, 1
 ec_loop:
         LOAD  R1, R4
         CMP   R1, R0
@@ -242,17 +274,21 @@ ec_loop:
         ADDI  R4, 1
         JMP   ec_loop
 ec_newline:
-        LOADI R1, 10
-        STORE R9, R1
-        JMP   main        ; 缓冲区 + 4 = 0x14，跳过 "echo"
-ec_loop:
-        LOAD  R1, R4
-        CMP   R1, R0
-        JZ    ec_done
-        STORE R9, R1
-        ADDI  R4, 1
-        JMP   ec_loop
-ec_done:
-        LOADI R1, 10
-        STORE R9, R1
-        JMP   main
+        CALL  print_newline
+        RET
+
+; ===== 子程序 =====
+print_string:
+        LOAD  R2, R1
+        CMP   R2, R0
+        JZ    ps_done
+        STORE R9, R2
+        ADDI  R1, 1
+        JMP   print_string
+ps_done:
+        RET
+
+print_newline:
+        LOADI R1, 0x45
+        CALL  print_string
+        RET

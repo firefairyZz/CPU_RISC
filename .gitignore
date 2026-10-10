@@ -1,10 +1,20 @@
-# iverilog 仿真产物
+# iverilog
 sim.out
 *.vvp
 *.vcd
-
-# VS Code 的 icarus 插件目录
 icarus/
+
+# 编译产物
+*.exe
+*.o
+*.out
+
+# 汇编产物
+*.mem
+*.bin
+
+# 编辑器
+.vscode/
 
 # 临时文件
 *.tmp

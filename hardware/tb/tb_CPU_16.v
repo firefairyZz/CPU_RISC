@@ -107,23 +107,14 @@ module tb_CPU_16;
         Reset = 0;
         #200;
 
-        send_byte(8'h65);  // e
-        send_byte(8'h63);  // c
         send_byte(8'h68);  // h
-        send_byte(8'h6F);  // o
-        send_byte(8'h0D);  // \r —— 裸 echo
+        send_byte(8'h65);  // e
+        send_byte(8'h6C);  // l
+        send_byte(8'h70);  // p
+        send_byte(8'h0D);  // \r —— help
 
-        send_byte(8'h65);  // e
-        send_byte(8'h63);  // c
-        send_byte(8'h68);  // h
-        send_byte(8'h6F);  // o
-        send_byte(8'h20);  // 空格
-        send_byte(8'h48);  // H
-        send_byte(8'h65);  // e
-        send_byte(8'h6C);  // l
-        send_byte(8'h6C);  // l
-        send_byte(8'h6F);  // o
-        send_byte(8'h0D);  // \r —— echo Hello
+        send_byte(8'h78);  // x
+        send_byte(8'h0D);  // \r —— 未知命令 x
 
         #20000;
         $display("Done");
